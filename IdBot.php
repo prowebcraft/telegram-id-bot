@@ -1,5 +1,8 @@
 <?php
 
+use TelegramBot\Api\Types\Inline\InputMessageContent\Text;
+use TelegramBot\Api\Types\Inline\QueryResult\Article;
+
 class IdBot extends \Prowebcraft\Telebot\Telebot
 {
 
@@ -8,7 +11,9 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
      */
     public function idCommand()
     {
-        if ($this->isChatPrivate()) {
+        if ($this->isChatGroup()) {
+            $this->groupIdCommand();
+        } else {
             $this->myIdCommand();
         }
     }
@@ -30,6 +35,20 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
             $this->reply('This is not a group');
         } else {
             $this->replyToLastMessageWithMarkdown('Group id is : *' . $this->getChatId() .'*');
+        }
+    }
+
+    protected function handleInlineQuery(\TelegramBot\Api\Types\Inline\InlineQuery $inlineQuery)
+    {
+        if ($this->isChatGroup()) {
+            $id = $this->getChatId();
+            return [
+                new Article((string)md5($id), "Send group id to chat", 'Group Id: ' . $id, null, null, null,
+                    new Text('Group id is : *' . $this->getChatId() .'*', 'markdown', true)
+                )
+            ];
+        } else {
+            System_Daemon::debug('Not a group chat');
         }
     }
 
