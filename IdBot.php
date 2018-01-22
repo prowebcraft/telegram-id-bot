@@ -38,6 +38,62 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
         }
     }
 
+    /**
+     * Testing of dialogs
+     * @admin
+     */
+    public function dialogCommand()
+    {
+        $this->ask('Choose your pill', ['🔴 red', '🔵 blue'], 'dialogResponse');
+    }
+
+    /**
+     * Testing simple questions
+     * @admin
+     */
+    public function answerCommand()
+    {
+        $this->ask('Your name?', null, 'answerResponse');
+    }
+
+    /**
+     * Test inline buttons
+     * @admin
+     */
+    public function inlineCommand()
+    {
+        $menu = [];
+        $menu[] = [
+            [
+                'text' => "Option one",
+                'callback_data' => 'Option one data'
+            ]
+        ];
+        $menu[] = [
+            [
+                'text' => 'Option two',
+                'callback_data' => 'Option two data'
+            ],
+        ];
+        $this->askInline('Use inline buttons?', $menu, 'inlineResponse');
+    }
+
+    protected function inlineResponse(\Prowebcraft\Telebot\AnswerInline $answer) {
+        $this->replyToLastMessageWithMarkdown("*Your select*: " . $answer->getData());
+        $answer->reply(); //Hide waiting message;
+    }
+    protected function dialogResponse(\Prowebcraft\Telebot\Answer $answer) {
+        switch ($answer->getAnswerVariant()) {
+            default:
+                $this->replyToLastMessageWithMarkdown("*You selected*: " . $answer->getAnswerVariant());
+        }
+    }
+
+    protected function answerResponse(\Prowebcraft\Telebot\Answer $answer)
+    {
+        $this->replyToLastMessageWithMarkdown("*You say*: " . $answer->getReplyText());
+    }
+
     protected function handleInlineQuery(\TelegramBot\Api\Types\Inline\InlineQuery $inlineQuery)
     {
         if ($this->isChatGroup()) {
@@ -50,6 +106,7 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
         } else {
             System_Daemon::debug('Not a group chat');
         }
+        return false;
     }
 
 }
