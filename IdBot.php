@@ -23,7 +23,7 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
      */
     public function myIdCommand()
     {
-        $this->replyToLastMessageWithMarkdown('You id is: *' . $this->getUserId() .'*');
+        $this->replyToLastMessageWithMarkdown('Your id is: *' . $this->getUserId() .'*');
     }
 
     /**
