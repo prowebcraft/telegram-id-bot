@@ -1,6 +1,7 @@
 {
   "minimum-stability": "dev",
   "require": {
-    "prowebcraft/telebot": "dev-master"
+    "prowebcraft/telebot": "dev-master",
+    "sentry/sentry": "^1.11@dev"
   }
 }

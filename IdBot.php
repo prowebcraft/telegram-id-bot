@@ -11,7 +11,7 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
      */
     public function idCommand()
     {
-        if ($this->isChatGroup()) {
+        if ($this->isChatGroup() || $this->isChannel()) {
             $this->groupIdCommand();
         } else {
             $this->myIdCommand();
@@ -31,10 +31,11 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
      */
     public function groupIdCommand()
     {
-        if (!$this->isChatGroup()) {
+        if (!$this->isChatGroup() && !$this->isChannel()) {
             $this->reply('This is not a group');
         } else {
-            $this->replyToLastMessageWithMarkdown('Group id is : *' . $this->getChatId() .'*');
+            $type = $this->isChannel() ? 'Channel' : 'Group';
+            $this->replyToLastMessageWithMarkdown($type . ' id is : *' . $this->getChatId() .'*');
         }
     }
 
@@ -78,10 +79,19 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
         $this->askInline('Use inline buttons?', $menu, 'inlineResponse');
     }
 
+    /**
+     * Inline Response Handler
+     * @param \Prowebcraft\Telebot\AnswerInline $answer
+     */
     protected function inlineResponse(\Prowebcraft\Telebot\AnswerInline $answer) {
         $this->replyToLastMessageWithMarkdown("*Your select*: " . $answer->getData());
         $answer->reply(); //Hide waiting message;
     }
+
+    /**
+     * Dialog Response Handler
+     * @param \Prowebcraft\Telebot\Answer $answer
+     */
     protected function dialogResponse(\Prowebcraft\Telebot\Answer $answer) {
         switch ($answer->getAnswerVariant()) {
             default:
@@ -89,11 +99,20 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
         }
     }
 
+    /**
+     * Answer Response Handler
+     * @param \Prowebcraft\Telebot\Answer $answer
+     */
     protected function answerResponse(\Prowebcraft\Telebot\Answer $answer)
     {
         $this->replyToLastMessageWithMarkdown("*You say*: " . $answer->getReplyText());
     }
 
+    /**
+     * Inline Query Handler
+     * @param \TelegramBot\Api\Types\Inline\InlineQuery $inlineQuery
+     * @return array|bool|false|\TelegramBot\Api\Types\Inline\QueryResult\AbstractInlineQueryResult[]
+     */
     protected function handleInlineQuery(\TelegramBot\Api\Types\Inline\InlineQuery $inlineQuery)
     {
         if ($this->isChatGroup()) {
