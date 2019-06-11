@@ -123,7 +123,7 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
                 )
             ];
         } else {
-            System_Daemon::debug('Not a group chat');
+            $this->debug('Not a group chat');
         }
         return false;
     }
