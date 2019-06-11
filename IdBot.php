@@ -7,6 +7,14 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
 {
 
     /**
+     * Alias for idCommand
+     */
+    public function startCommand()
+    {
+        $this->idCommand();
+    }
+
+    /**
      * Gets group or user id (depending on context)
      */
     public function idCommand()
