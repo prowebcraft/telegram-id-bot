@@ -1,0 +1,7 @@
+Gets group or user id (depending on context);Получение идентификатора группы или пользователя (в зависимости от контекста)
+Gets user id;Получение id пользователя
+Gets group chat id;Получение id группы или канала
+Your id is;Ваш id
+Channel id is;id канала
+Group id is;id группы
+This is not a group;Это не группа

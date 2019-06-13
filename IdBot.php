@@ -6,13 +6,20 @@ use TelegramBot\Api\Types\Inline\QueryResult\Article;
 class IdBot extends \Prowebcraft\Telebot\Telebot
 {
 
-    /**
-     * Alias for idCommand
-     */
-    public function startCommand()
+//    /**
+//     * Alias for idCommand
+//     */
+//    public function startCommand()
+//    {
+//        $this->idCommand();
+//    }
+
+
+    protected function configTranslations(\Symfony\Component\Translation\Translator $translator)
     {
-        $this->idCommand();
+        $translator->addResource('csv', __DIR__ . DIRECTORY_SEPARATOR . 'locale' . DIRECTORY_SEPARATOR . 'idbot.ru.csv', 'ru');
     }
+
 
     /**
      * Gets group or user id (depending on context)
@@ -31,7 +38,7 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
      */
     public function myIdCommand()
     {
-        $this->replyToLastMessageWithMarkdown('Your id is: *' . $this->getUserId() .'*');
+        $this->replyToLastMessageWithMarkdown($this->__('Your id is') . ': *' . $this->getUserId() .'*');
     }
 
     /**
@@ -40,10 +47,10 @@ class IdBot extends \Prowebcraft\Telebot\Telebot
     public function groupIdCommand()
     {
         if (!$this->isChatGroup() && !$this->isChannel()) {
-            $this->reply('This is not a group');
+            $this->reply($this->__('This is not a group'));
         } else {
             $type = $this->isChannel() ? 'Channel' : 'Group';
-            $this->replyToLastMessageWithMarkdown($type . ' id is : *' . $this->getChatId() .'*');
+            $this->replyToLastMessageWithMarkdown($this->__($type . ' id is') .': *' . $this->getChatId() .'*');
         }
     }
 
