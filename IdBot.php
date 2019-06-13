@@ -6,13 +6,13 @@ use TelegramBot\Api\Types\Inline\QueryResult\Article;
 class IdBot extends \Prowebcraft\Telebot\Telebot
 {
 
-//    /**
-//     * Alias for idCommand
-//     */
-//    public function startCommand()
-//    {
-//        $this->idCommand();
-//    }
+    /**
+     * Alias for idCommand
+     */
+    public function startCommand()
+    {
+        $this->idCommand();
+    }
 
 
     protected function configTranslations(\Symfony\Component\Translation\Translator $translator)
